@@ -13,7 +13,7 @@ function love.conf(t)
     t.audio.mixwithsystem = true        -- Keep background music playing when opening LOVE (boolean, iOS and Android only)
 
     t.window.title = "warmup project"   -- The window title (string)
-    t.window.icon = nil                 -- Filepath to an image to use as the window's icon (string)
+    t.window.icon = "icons/default.png"                 -- Filepath to an image to use as the window's icon (string)
     t.window.width = 1600               -- The window width (number)
     t.window.height = 900               -- The window height (number)
     t.window.borderless = false         -- Remove all border visuals from the window (boolean)
@@ -27,7 +27,7 @@ function love.conf(t)
     t.window.depth = nil                -- The number of bits per sample in the depth buffer
     t.window.stencil = nil              -- The number of bits per sample in the stencil buffer
     t.window.display = 1                -- Index of the monitor to show the window in (number)
-    t.window.highdpi = false            -- Enable high-dpi mode for the window on a Retina display (boolean)
+    t.window.highdpi = true            -- Enable high-dpi mode for the window on a Retina display (boolean)
     t.window.usedpiscale = true         -- Enable automatic DPI scaling when highdpi is set to true as well (boolean)
     t.window.x = nil                    -- The x-coordinate of the window's position in the specified display (number)
     t.window.y = nil                    -- The y-coordinate of the window's position in the specified display (number)

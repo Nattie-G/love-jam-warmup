@@ -1,3 +1,5 @@
+local intro = require "intro"
+
 local lg = love.graphics
 local GAME_WIDTH  = CONFIG_OPTIONS.window.width
 local GAME_HEIGHT = CONFIG_OPTIONS.window.height
@@ -10,9 +12,12 @@ function love.load()
   window_width, window_height = GAME_WIDTH, GAME_HEIGHT
   canvas = lg.newCanvas(GAME_WIDTH,GAME_HEIGHT)
   interface.menuFont = love.graphics.newFont('fonts/NotoSans-Bold.ttf', 40)
+
+  intro:init()
 end
 
-function love.update()
+function love.update(dt)
+  intro:update(dt)
 end
 
 function love.draw()
@@ -28,6 +33,8 @@ function love.draw()
   local stretchX = window_width / GAME_WIDTH
   local stretchY = window_height / GAME_HEIGHT
   lg.draw(canvas, 0, 0, 0, stretchX, stretchY)
+
+  intro:draw()
 end
 
 function love.resize(w, h)
