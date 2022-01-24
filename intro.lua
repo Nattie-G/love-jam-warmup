@@ -1,4 +1,5 @@
-local intro = {length = 0.5, sustain = 0.2}
+local intro = {length = 0.5, sustain = 1}
+local intro2 = require "intro2"
 
 intro.cursor = love.mouse.getSystemCursor("hand")
 
@@ -11,12 +12,10 @@ function intro:init(subtext)
   self.dot32 = {}
   self.dot32.font = love.graphics.newFont("fonts/PT_Sans/PTSans-Bold.ttf", 100)
   self.dot32.x = love.graphics.getWidth()/2
-  self.dot32.y = 0
 
   self.sub = {}
   self.sub.font = love.graphics.newFont("fonts/PT_Sans/PTSans-Regular.ttf", 45)
   self.sub.text = subtext or "Games"
-  self.sub.x = 0
   self.sub.y = love.graphics.getHeight()/1.65
 
   self.timer = 0
@@ -32,15 +31,19 @@ function intro:init(subtext)
   love.graphics.setColour           = love.graphics.setColor
   love.graphics.setColourMask       = love.graphics.setColorMask
   love.graphics.setColourMode       = love.graphics.setColorMode
+
+  intro2:init()
 end
 
 function intro:update(dt)
   if not dt then
-    error("dt is required for intro.update(dt)")
+    error("dt is required for intro:update(dt)")
   end
 
-
   self.timer = self.timer + dt
+
+  self.dot32.x = love.graphics.getWidth()/2
+  self.sub.y = love.graphics.getHeight()/1.65
   
   if self.timer > self.length then
     self.phase = 2
@@ -50,10 +53,12 @@ function intro:update(dt)
   end
   if self.timer > self.length + self.sustain then
     self.phase = 3
+    intro2:update(dt)
   end
 end
 
 function intro:draw()
+  intro2:draw()
   if self.phase < 3 then
     local r,g,b,a = love.graphics.getColour()
     local font = love.graphics.getFont()

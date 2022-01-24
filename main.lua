@@ -1,5 +1,4 @@
 local intro = require "intro"
-local intro2 = require "intro2"
 
 local lg = love.graphics
 local GAME_WIDTH  = CONFIG_OPTIONS.window.width
@@ -16,12 +15,10 @@ function love.load()
   interface.introFont = love.graphics.newFont('fonts/Anton-Regular.ttf', 60)
 
   intro:init()
-  intro2:init()
 end
 
 function love.update(dt)
   intro:update(dt)
-  intro2:update(dt)
 end
 
 function love.draw()
@@ -39,7 +36,6 @@ function love.draw()
   lg.draw(canvas, 0, 0, 0, stretchX, stretchY)
 
   intro:draw()
-  intro2:draw()
 end
 
 function love.resize(w, h)

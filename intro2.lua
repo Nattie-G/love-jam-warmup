@@ -1,4 +1,4 @@
-local intro = {length = 0.8, sustain = 0.3}
+local intro = {length = 1.5, sustain = 0.2}
 local lg = love.graphics
 
 intro.cursor = love.mouse.getSystemCursor("hand")
@@ -44,8 +44,12 @@ function intro:update(dt)
     error("dt is required for intro.update(dt)")
   end
 
-
   self.timer = self.timer + dt
+
+  self.h1.x = love.graphics.getWidth()/2.0
+  self.h1.y = 0
+  self.h2.x = lg.getWidth()/2 - self.h2.font:getWidth(self.h2.text)/2.0
+  self.h2.y = lg.getHeight()/1.58
   
   if self.timer > self.length then
     self.phase = 2
@@ -72,9 +76,7 @@ function intro:draw()
     love.graphics.print(
         "Nattie-G",
         self.h1.x - self.h1.font:getWidth("Nattie-G")/2,
-            0.85 * --self.easeOutElastic(self.timer)*
-                love.graphics.getHeight()/2 -
-                self.h1.font:getHeight()/2
+            0.85 * love.graphics.getHeight()/2 - self.h1.font:getHeight()/2
     )
     love.graphics.setFont(self.h2.font)
     love.graphics.print(
