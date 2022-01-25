@@ -1,4 +1,4 @@
-local intro = {length = 1.5, sustain = 0.2}
+local intro = {length = 1.5, sustain = 0.2, fadeout = 0.2}
 local lg = love.graphics
 
 intro.cursor = love.mouse.getSystemCursor("hand")
@@ -60,6 +60,9 @@ function intro:update(dt)
   if self.timer > self.length + self.sustain then
     self.phase = 3
   end
+  if self.timer > self.length + self.sustain + self.fadeout then
+    self.phase = 4
+  end
 end
 
 function intro:draw()
@@ -97,21 +100,21 @@ function intro:draw()
         5
     )
     
-    love.graphics.setColour(0, 0, 0, intro.easeInSine(self.timer))
+    love.graphics.setColour(0, 0, 0, intro.easeInSine(self.timer - 0.5))
+
     love.graphics.rectangle(
-      'fill',
-      0,
-      0,
-      lg.getWidth(),
-      lg.getHeight()
+        'fill',
+        0,
+        0,
+        lg.getWidth(),
+        lg.getHeight()
     )
 
+  elseif self.phase < 4 then
+    local x = (self.timer - (self.length + self.sustain)) / self.fadeout
+    lg.setColour(0, 0, 0, 1 - intro.easeInSine(x))
+    lg.rectangle('fill', 0, 0, lg.getWidth(), lg.getHeight())
   end
 end
-
-function intro.distanceBetween(x1, y1, x2, y2)
-  return math.sqrt((y2-y1)^2 + (x2-x1)^2)
-end
-
 
 return intro
