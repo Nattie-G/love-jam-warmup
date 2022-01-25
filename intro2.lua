@@ -74,20 +74,6 @@ function intro:draw()
     lg.setColor(love.math.colorFromBytes(232, 170, 55))
     love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
 
-    love.graphics.setColor(1, 1, 1, 1 - math.pow(1 - self.timer, 5))
-    love.graphics.setFont(self.h1.font)
-    love.graphics.print(
-        "Nattie-G",
-        self.h1.x - self.h1.font:getWidth("Nattie-G")/2,
-            0.85 * love.graphics.getHeight()/2 - self.h1.font:getHeight()/2
-    )
-    love.graphics.setFont(self.h2.font)
-    love.graphics.print(
-        self.h2.text,
-        self.h2.x,
-        0.90 * --self.easeOutElastic(self.timer)*
-        self.h2.y - self.h2.font:getHeight()/2
-    )
 
     love.graphics.setColor(0.2, 0.2, 0.2, self.ghost)
     love.graphics.setColour(r,g,b,a)
@@ -108,6 +94,20 @@ function intro:draw()
         0,
         lg.getWidth(),
         lg.getHeight()
+    )
+    love.graphics.setColor(1, 1, 1, (1 - math.pow(1 - self.timer, 5) * 1 - intro.easeInSine(self.timer - 0.4)))
+    love.graphics.setFont(self.h1.font)
+    love.graphics.print(
+        "Nattie-G",
+        self.h1.x - self.h1.font:getWidth("Nattie-G")/2,
+            0.85 * love.graphics.getHeight()/2 - self.h1.font:getHeight()/2
+    )
+    love.graphics.setFont(self.h2.font)
+    love.graphics.print(
+        self.h2.text,
+        self.h2.x,
+        0.90 * --self.easeOutElastic(self.timer)*
+        self.h2.y - self.h2.font:getHeight()/2
     )
 
   elseif self.phase < 4 then
