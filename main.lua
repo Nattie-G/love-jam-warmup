@@ -1,6 +1,7 @@
 local intro = require "intro"
+local Game = require 'game'
 
-local lg = love.graphics
+lg = love.graphics -- global shorhand for use in all modules
 local GAME_WIDTH  = CONFIG_OPTIONS.window.width
 local GAME_HEIGHT = CONFIG_OPTIONS.window.height
 
@@ -14,11 +15,13 @@ function love.load()
   interface.menuFont = love.graphics.newFont('fonts/Noto_Sans/NotoSans-Bold.ttf', 40)
   interface.introFont = love.graphics.newFont('fonts/Anton-Regular.ttf', 60)
 
+  Game:init()
   intro:init()
 end
 
 function love.update(dt)
   intro:update(dt)
+  Game:update(dt)
 end
 
 function love.draw()
@@ -30,7 +33,11 @@ function love.draw()
   lg.print('Welcome to the warmup weekend!', 300, 400, 0, 1)
   local fps = love.timer.getFPS()
   lg.print('FPS: ' .. fps, 50, 40, 0, 0.75)
+  Game:draw()
+
+
   lg.setCanvas()
+  lg.setColor(1, 1, 1)
   local stretchX = window_width / GAME_WIDTH
   local stretchY = window_height / GAME_HEIGHT
   lg.draw(canvas, 0, 0, 0, stretchX, stretchY)
