@@ -25,4 +25,57 @@ dummyLevel.tilesList = {
 
 Levels[1] = dummyLevel
 
+local featureDict = {
+  WALL    = 'Wall',
+  BOX     = 'Box',
+  GOAL    = 'Goal',
+  PLAYER  = 'Player',
+}
+
+local asciiDict = {
+  ['#'] = featureDict.WALL,
+  ['.'] = nil,
+  ['G'] = featureDict.GOAL,
+  ['B'] = featureDict.BOX,
+  ['@'] = featureDict.PLAYER,
+}
+
+function loadLevel(path)
+  local level = {}
+  level.tilesList = {}
+  level.entitiesList = {}
+
+  local lines = io.lines(path) --TODO protect this call
+
+  local row = 0
+  for l in lines do
+    row = row + 1
+    print("row, l", row, l)
+    for col = 1, #l do
+      local char = l:sub(col, col)
+      local feature = asciiDict[char]
+      if feature == featureDict.BOX then -- entities branch
+        local entity
+        table.insert(level.entitiesList, entity)
+
+      else -- tiles branch
+        local tile
+        if feature == featureDict.WALL then
+          tile = Tile:new({gx = col, gy = row})
+        elseif feature == featureDict.GOAL then
+          tile = Tile:new({gx = col, gy = row, color = {0.7, 0.2, 0.0}})
+        elseif feature == featureDict.PLAYER then
+          tile = Tile:new({gx = col, gy = row, color = {0.0, 0.7, 0.2}})
+        end
+
+        table.insert(level.tilesList, tile)
+      end
+
+    end
+  end
+  return level
+end
+
+Levels[1] = loadLevel('test-puzzle') 
+
 return Levels
