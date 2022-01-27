@@ -62,8 +62,6 @@ function Game:update(dt)
 end
 
 function Game:draw()
-  GAME_WIDTH = size*level.gridWidth
-  GAME_HEIGHT = size*level.gridHeight
   love.graphics.push()
   love.graphics.translate(love.graphics.getWidth()/2 - GAME_WIDTH*zoom/2, love.graphics.getHeight()/2 - GAME_HEIGHT*zoom/2)
   love.graphics.scale(zoom)
