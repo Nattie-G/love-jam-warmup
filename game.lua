@@ -19,9 +19,9 @@ end
 function Game:draw()
   for _, t in ipairs(level.tilesList) do
     lg.setColor(t.color)
-    lg.rectangle('fill', t.x, t.y, t.w, t.h)
+    lg.rectangle('fill', t.gx * 60, t.gy * 45, t.w, t.h)
     lg.setColor(0, 0, 0)
-    lg.rectangle('line', t.x, t.y, t.w, t.h)
+    lg.rectangle('line', t.gx * 60, t.gy * 45, t.w, t.h)
   end
 
   for _, e in ipairs(level.entitiesList) do
