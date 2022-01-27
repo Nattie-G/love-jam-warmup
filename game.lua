@@ -32,16 +32,21 @@ local images = {
 local function autoTile()
   for _, t in ipairs(level.tilesList) do
     local n = 0
-    if level.grid[t.gx][t.gy-1] and level.grid[t.gx][t.gy-1].type == t.type then
+    local G = level.grid
+    local tileN = G[t.gy-1] and G[t.gy-1][t.gx]
+    if tileN and tileN.type == t.type then
       n = n +1
     end
-    if level.grid[t.gx+1] and level.grid[t.gx+1][t.gy] and level.grid[t.gx+1][t.gy].type == t.type then
+    local tileE = G[t.gy][t.gx+1]
+    if tileE and tileE.type == t.type then
       n = n +2
     end
-    if level.grid[t.gx][t.gy+1] and level.grid[t.gx][t.gy+1].type == t.type then
+    local tileS = G[t.gy+1] and G[t.gy+1][t.gx]
+    if tileS and tileS.type == t.type then
       n = n +4
     end
-    if level.grid[t.gx-1] and level.grid[t.gx-1][t.gy] and level.grid[t.gx-1][t.gy].type == t.type then
+    local tileW = G[t.gy][t.gx-1]
+    if tileW and tileW.type == t.type then
       n = n +8
     end
 
