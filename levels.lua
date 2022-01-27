@@ -45,31 +45,45 @@ function loadLevel(path)
   level.tilesList = {}
   level.entitiesList = {}
 
-  local lines = io.lines(path) --TODO protect this call
+  --TODO protect io calls
+  local file = io.open(path)
+  io.input(file)
+  local contents = io.read("*all")
+
+  local _
+  _, level.gridHeight = contents:gsub("\n", "\n") 
+  level.gridWidth = contents:find("\n") - 1
+
+  level.grid = {}
+  for row = 1, level.gridHeight do
+    level.grid[row] = {}
+  end
+
+  file:seek('cur', 0)
+  local lines = io.lines(path)
 
   local row = 0
   for l in lines do
     row = row + 1
-    print("row, l", row, l)
     for col = 1, #l do
       local char = l:sub(col, col)
       local feature = asciiDict[char]
+      local entity, tile
       if feature == featureDict.BOX then -- entities branch
-        local entity
-        table.insert(level.entitiesList, entity)
+        entity = Entity:new({gx = col, gy = row})
+      elseif feature == featureDict.PLAYER then
+        entity = Entity:new({gx = col, gy = row, color = {0.0, 0.7, 0.2}})
 
       else -- tiles branch
-        local tile
         if feature == featureDict.WALL then
           tile = Tile:new({gx = col, gy = row})
         elseif feature == featureDict.GOAL then
           tile = Tile:new({gx = col, gy = row, color = {0.7, 0.2, 0.0}})
-        elseif feature == featureDict.PLAYER then
-          tile = Tile:new({gx = col, gy = row, color = {0.0, 0.7, 0.2}})
         end
-
-        table.insert(level.tilesList, tile)
       end
+        table.insert(level.tilesList, tile)
+        table.insert(level.entitiesList, entity)
+        level.grid[row][col] = tile or entity
 
     end
   end
