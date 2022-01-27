@@ -1,4 +1,5 @@
 local Entity = require 'entity'
+local Tile = require 'tile'
 
 local Levels = {}
 
@@ -14,12 +15,12 @@ function newTile(x, y)
 end
 
 dummyLevel.tilesList = {
-  newTile(0, 0),
-  newTile(60, 45),
-  newTile(120, 90),
-  newTile(180, 90),
-  newTile(60, 90),
-  newTile(240, 135),
+  Tile:new({x = 0,   y = 0  }),
+  Tile:new({x = 60,  y = 45 }),
+  Tile:new({x = 120, y = 90 }),
+  Tile:new({x = 180, y = 90 }),
+  Tile:new({x = 60,  y = 90 }),
+  Tile:new({x = 240, y = 135}),
 }
 
 Levels[1] = dummyLevel
