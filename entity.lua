@@ -4,7 +4,7 @@ local EntityMT = {
   gx = 0,
   gy = 0,
   w = 50,
-  h = 35,
+  h = 50,
   color = {1, 0, 1},
 }
 
