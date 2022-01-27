@@ -26,9 +26,10 @@ function Game:draw()
 
   for _, e in ipairs(level.entitiesList) do
     lg.setColor(e.color)
-    lg.rectangle('fill', e.x, e.y, e.w, e.h)
+    lg.rectangle('fill', 5 + e.gx * 60, 5 + e.gy * 45, e.w, e.h)
     lg.setColor(0, 0, 0)
-    lg.rectangle('line', e.x, e.y, e.w, e.h)
+    lg.setLineWidth(2)
+    lg.rectangle('line', 5 + e.gx * 60, 5 + e.gy * 45, e.w, e.h)
   end
 end
 
