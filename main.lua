@@ -59,6 +59,9 @@ function love.mousereleased(x, y, button, isTouch)
 end
 
 function love.keypressed(key)
+  if key == 'p' then
+    Game.printGrid()
+  end
 end
 
 function love.focus(f)
