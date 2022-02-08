@@ -135,7 +135,7 @@ do
   }
 end
 
-function isValidMove(gx, gy, ngx, ngy)
+function isValidMove(gx, gy, ngx, ngy, recurse)
   local asciiDict, featureDict = levelsList.asciiDict, levelsList.featureDict
   local feature = Game:getFeatureAt(ngx, ngy)
   if not feature then
@@ -143,7 +143,10 @@ function isValidMove(gx, gy, ngx, ngy)
   end
 
   if feature.type == featureDict.BOX then
-    return true
+    local nngx = ngx + (ngx-gx)
+    local nngy = ngy + (ngy-gy)
+    recurse = recurse == nil
+    return recurse and isValidMove(ngx, ngy, nngx, nngy, false)
   elseif feature.type == featureDict.GOAL then
     return true
   end
