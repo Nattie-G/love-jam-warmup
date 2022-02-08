@@ -35,23 +35,34 @@ local function loadLevel(idx)
   return lv
 end
 
+
 local function autoTile()
+  local G = level.grid
+
+  local function getTileAtGridCoords(gx, gy)
+    local tile = G[gy] and G[gy][gx] and G[gy][gx][1]
+    return tile
+  end
+
   for _, t in ipairs(level.tilesList) do
     local n = 0
-    local G = level.grid
-    local tileN = G[t.gy-1] and G[t.gy-1][t.gx]
+    --local tileN = G[t.gy-1] and G[t.gy-1][t.gx]
+    local tileN = getTileAtGridCoords(t.gx, t.gy-1)
     if tileN and tileN.type == t.type or t.gy == 1 then
       n = n +1
     end
-    local tileE = G[t.gy][t.gx+1]
+    --local tileE = G[t.gy][t.gx+1]
+    local tileE = getTileAtGridCoords(t.gx + 1, t.gy)
     if tileE and tileE.type == t.type or t.gx == level.gridWidth then
       n = n +2
     end
-    local tileS = G[t.gy+1] and G[t.gy+1][t.gx]
+    --local tileS = G[t.gy+1] and G[t.gy+1][t.gx]
+    local tileS = getTileAtGridCoords(t.gx, t.gy + 1)
     if tileS and tileS.type == t.type or t.gy == level.gridHeight then
       n = n +4
     end
-    local tileW = G[t.gy][t.gx-1]
+    --local tileW = G[t.gy][t.gx-1]
+    local tileW = getTileAtGridCoords(t.gx - 1, t.gy)
     if tileW and tileW.type == t.type or t.gx == 1 then
       n = n +8
     end
@@ -139,7 +150,7 @@ function isValidMove(gx, gy, ngx, ngy, recurse)
   local asciiDict, featureDict = levelsList.asciiDict, levelsList.featureDict
   local featuresList = Game:getFeaturesAt(ngx, ngy)
   local returnValue = true
-  for _, feature in ipairs (featuresList) do
+  for _, feature in ipairs(featuresList) do
     if feature.type == featureDict.BOX then
       local nngx = ngx + (ngx-gx)
       local nngy = ngy + (ngy-gy)
