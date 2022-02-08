@@ -72,10 +72,10 @@ function loadLevel(path)
           tile = Tile:new(opts)
         end
       end
-        table.insert(level.tilesList, tile)
-        table.insert(level.entitiesList, entity)
-        level.grid[row][col] = tile or entity
 
+      table.insert(level.tilesList, tile)
+      table.insert(level.entitiesList, entity)
+      level.grid[row][col] = {tile or entity}
     end
   end
   return level

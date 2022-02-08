@@ -137,20 +137,23 @@ end
 
 function isValidMove(gx, gy, ngx, ngy, recurse)
   local asciiDict, featureDict = levelsList.asciiDict, levelsList.featureDict
-  local feature = Game:getFeatureAt(ngx, ngy)
-  if not feature then
-    return true
+  local featuresList = Game:getFeaturesAt(ngx, ngy)
+  local returnValue = true
+  for _, feature in ipairs (featuresList) do
+    if feature.type == featureDict.BOX then
+      local nngx = ngx + (ngx-gx)
+      local nngy = ngy + (ngy-gy)
+      recurse = recurse == nil
+      returnValue = recurse and
+          isValidMove(ngx, ngy, nngx, nngy, false
+      )
+    elseif feature.type == featureDict.GOAL then
+      returnValue = returnValue and true
+    else
+      returnValue = false
+    end
   end
-
-  if feature.type == featureDict.BOX then
-    local nngx = ngx + (ngx-gx)
-    local nngy = ngy + (ngy-gy)
-    recurse = recurse == nil
-    return recurse and isValidMove(ngx, ngy, nngx, nngy, false)
-  elseif feature.type == featureDict.GOAL then
-    return true
-  end
-  return false
+  return returnValue
 end
 
 function Game:keypressed(key)
@@ -174,6 +177,19 @@ function Game:keypressed(key)
     
   -- player movement resolution
   if isValidMove(P.gx, P.gy, ngx, ngy) then
+    local featuresList = Game:getFeaturesAt(ngx, ngy)
+    for i, feature in ipairs(featuresList) do
+      if feature.type == levelsList.featureDict.BOX then
+        local nngx = ngx + (ngx-P.gx)
+        local nngy = ngy + (ngy-P.gy)
+        feature.gx = nngx
+        feature.gy = nngy
+        --TODO fix level's grid position of box
+        table.remove(featuresList, i)
+        table.insert(level.grid[nngy][nngx], feature)
+      end
+    end
+
     P.gx = ngx
     P.gy = ngy
   else
@@ -184,7 +200,7 @@ end
 function Game:keyreleased(key)
 end
 
-function Game:getFeatureAt(gx, gy)
+function Game:getFeaturesAt(gx, gy)
   local OOB = "Game:getFeature supplied coordinates are Out Of Bounds"
   if gx < 1 or gx > level.gridWidth then return error(OOB) end
   if gy < 1 or gy > level.gridHeight then return error(OOB) end
