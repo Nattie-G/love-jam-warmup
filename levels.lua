@@ -23,6 +23,8 @@ local asciiDict = {
   ['@'] = featureDict.PLAYER,
 }
 
+Levels.featureDict = featureDict
+
 function loadLevel(path)
   local level = {}
   level.tilesList = {}
@@ -52,18 +54,22 @@ function loadLevel(path)
       local char = l:sub(col, col)
       local feature = asciiDict[char]
       local entity, tile
+      local opts = {gx = col, gy = row, type = feature}
       if feature == featureDict.BOX then -- entities branch
-        entity = Entity:new({gx = col, gy = row})
+        entity = Entity:new(opts)
       elseif feature == featureDict.PLAYER then
-        --entity = Entity:new({gx = col, gy = row, color = {0.0, 0.7, 0.2}})
+        --opts.color = {0.0, 0.7, 0.2}
+        --entity = Entity:new(opts)
         --level.player = entity
-        level.player = Entity:new({gx = col, gy = row, color = {0.0, 0.7, 0.2}})
+        opts.color = {0.0, 0.7, 0.2}
+        level.player = Entity:new(opts)
 
       else -- tiles branch
         if feature == featureDict.WALL then
-          tile = Tile:new({gx = col, gy = row, type = feature})
+          tile = Tile:new(opts)
         elseif feature == featureDict.GOAL then
-          tile = Tile:new({gx = col, gy = row, color = {0.7, 0.2, 0.0}, type = feature})
+          opts.color = {0.7, 0.2, 0.0}
+          tile = Tile:new(opts)
         end
       end
         table.insert(level.tilesList, tile)

@@ -135,24 +135,57 @@ do
   }
 end
 
+function isValidMove(gx, gy, ngx, ngy)
+  local asciiDict, featureDict = levelsList.asciiDict, levelsList.featureDict
+  local feature = Game:getFeatureAt(ngx, ngy)
+  if not feature then
+    return true
+  end
+
+  if feature.type == featureDict.BOX then
+    return true
+  elseif feature.type == featureDict.GOAL then
+    return true
+  end
+  return false
+end
+
 function Game:keypressed(key)
   local IA = inputActions
   local P = level.player
   --print("key = ", key)
   --print("keyMap[key] = ", keyMap[key])
+
+  -- player movement target
+  local ngx, ngy = P.gx, P.gy
   if keyMap[key] == IA.left then
-    P.gx = P.gx - 1
+    ngx = P.gx - 1
   elseif keyMap[key] == IA.right then
-    P.gx = P.gx + 1
+    ngx = P.gx + 1
   elseif keyMap[key] == IA.up then
-    P.gy = P.gy - 1
+    ngy = P.gy - 1
   elseif keyMap[key] == IA.down then
-    P.gy = P.gy + 1
+    ngy = P.gy + 1
   else
+  end
+    
+  -- player movement resolution
+  if isValidMove(P.gx, P.gy, ngx, ngy) then
+    P.gx = ngx
+    P.gy = ngy
+  else
+    -- don't move the player
   end
 end
 
 function Game:keyreleased(key)
+end
+
+function Game:getFeatureAt(gx, gy)
+  local OOB = "Game:getFeature supplied coordinates are Out Of Bounds"
+  if gx < 1 or gx > level.gridWidth then return error(OOB) end
+  if gy < 1 or gy > level.gridHeight then return error(OOB) end
+  return level.grid[gy][gx]
 end
 
 -- function love.resize(w, h)
