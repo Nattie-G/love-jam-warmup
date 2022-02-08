@@ -4,6 +4,7 @@ local lvlIdx = 1
 -- to be set in init()
 local size = 60
 local level = levelsList[lvlIdx]
+--local level = loadLevel(1)
 local GAME_WIDTH = size*level.gridWidth
 local GAME_HEIGHT = size*level.gridHeight
 local zoom = math.min(love.graphics.getWidth()/GAME_WIDTH, love.graphics.getHeight()/GAME_HEIGHT)
@@ -28,6 +29,11 @@ local images = {
   love.graphics.newImage("auto tiling/14.png"),
   love.graphics.newImage("auto tiling/15.png")
 }
+
+local function loadLevel(idx)
+  local lv = levelsList[idx]
+  return lv
+end
 
 local function autoTile()
   for _, t in ipairs(level.tilesList) do
@@ -62,17 +68,17 @@ function Game:update(dt)
 end
 
 function Game:draw()
-  love.graphics.push()
-  love.graphics.translate(love.graphics.getWidth()/2 - GAME_WIDTH*zoom/2, love.graphics.getHeight()/2 - GAME_HEIGHT*zoom/2)
-  love.graphics.scale(zoom)
+  lg.push()
+  lg.translate(lg.getWidth()/2 - GAME_WIDTH*zoom/2, lg.getHeight()/2 - GAME_HEIGHT*zoom/2)
+  lg.scale(zoom)
 
-  love.graphics.setColour(0.7, 0.55, 0.41)
-  love.graphics.rectangle("fill", 0,0, GAME_WIDTH, GAME_HEIGHT)
+  lg.setColour(0.7, 0.55, 0.41)
+  lg.rectangle("fill", 0,0, GAME_WIDTH, GAME_HEIGHT)
 
   for _, t in ipairs(level.tilesList) do
     if t.type == "Wall" then
-      love.graphics.setColour(1,1,1) 
-      love.graphics.draw(images[t.tile+1], (t.gx-1) * size, (t.gy-1) * size, nil, size/images[16]:getWidth())
+      lg.setColour(1,1,1) 
+      lg.draw(images[t.tile+1], (t.gx-1) * size, (t.gy-1) * size, nil, size/images[16]:getWidth())
       -- love.graphics.print(t.tile, (t.gx-1) * size, (t.gy-1) * size)
     else
       lg.setColor(t.color)
@@ -89,6 +95,14 @@ function Game:draw()
     lg.setLineWidth(2)
     lg.rectangle('line', 5 + (e.gx-1) * size, 5 + (e.gy-1) * size, size-10, size-10)
   end
+
+  local P = level.player
+  lg.setColor(P.color)
+  lg.rectangle('fill', 5 + (P.gx-1) * size, 5 + (P.gy-1) * size, size -10, size-10)
+  lg.setColor(0, 0, 0)
+  lg.setLineWidth(2)
+  lg.rectangle('line', 5 + (P.gx-1) * size, 5 + (P.gy-1) * size, size-10, size-10)
+
   love.graphics.pop()
 end
 
@@ -100,6 +114,45 @@ function Game.printGrid()
     end
     print(table.concat(tbl))
   end
+end
+
+local inputActions = {}
+do
+  local actions = {'left', 'right', 'up', 'down'}
+  for k, v in ipairs(actions) do
+    inputActions[v] = k
+  end
+end
+
+local keyMap = {}
+do
+  local IA = inputActions
+  keyMap = {
+    ['left']  = IA.left,
+    ['right'] = IA.right,
+    ['up']    = IA.up,
+    ['down']  = IA.down,
+  }
+end
+
+function Game:keypressed(key)
+  local IA = inputActions
+  local P = level.player
+  --print("key = ", key)
+  --print("keyMap[key] = ", keyMap[key])
+  if keyMap[key] == IA.left then
+    P.gx = P.gx - 1
+  elseif keyMap[key] == IA.right then
+    P.gx = P.gx + 1
+  elseif keyMap[key] == IA.up then
+    P.gy = P.gy - 1
+  elseif keyMap[key] == IA.down then
+    P.gy = P.gy + 1
+  else
+  end
+end
+
+function Game:keyreleased(key)
 end
 
 -- function love.resize(w, h)

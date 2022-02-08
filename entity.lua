@@ -1,10 +1,10 @@
 local EntityMT = {
-  x = 0,
-  y = 0,
-  gx = 0,
-  gy = 0,
-  w = 50,
-  h = 50,
+  x   = 0,
+  y   = 0,
+  gx  = 0,
+  gy  = 0,
+  w   = 50,
+  h   = 50,
   color = {1, 0, 1},
 }
 

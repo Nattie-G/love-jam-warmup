@@ -72,7 +72,9 @@ function loadLevel(path)
       if feature == featureDict.BOX then -- entities branch
         entity = Entity:new({gx = col, gy = row})
       elseif feature == featureDict.PLAYER then
-        entity = Entity:new({gx = col, gy = row, color = {0.0, 0.7, 0.2}})
+        --entity = Entity:new({gx = col, gy = row, color = {0.0, 0.7, 0.2}})
+        --level.player = entity
+        level.player = Entity:new({gx = col, gy = row, color = {0.0, 0.7, 0.2}})
 
       else -- tiles branch
         if feature == featureDict.WALL then

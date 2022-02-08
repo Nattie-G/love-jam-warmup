@@ -58,6 +58,11 @@ function love.keypressed(key)
   if key == 'p' then
     Game.printGrid()
   end
+  Game:keypressed(key)
+end
+
+function love.keyreleased(key)
+  Game:keyreleased()
 end
 
 function love.focus(f)
