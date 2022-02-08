@@ -40,19 +40,19 @@ local function autoTile()
     local n = 0
     local G = level.grid
     local tileN = G[t.gy-1] and G[t.gy-1][t.gx]
-    if tileN and tileN.type == t.type then
+    if tileN and tileN.type == t.type or t.gy == 1 then
       n = n +1
     end
     local tileE = G[t.gy][t.gx+1]
-    if tileE and tileE.type == t.type then
+    if tileE and tileE.type == t.type or t.gx == level.gridWidth then
       n = n +2
     end
     local tileS = G[t.gy+1] and G[t.gy+1][t.gx]
-    if tileS and tileS.type == t.type then
+    if tileS and tileS.type == t.type or t.gy == level.gridHeight then
       n = n +4
     end
     local tileW = G[t.gy][t.gx-1]
-    if tileW and tileW.type == t.type then
+    if tileW and tileW.type == t.type or t.gx == 1 then
       n = n +8
     end
 
